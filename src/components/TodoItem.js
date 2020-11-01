@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 
-const TodoItem = (props) => {
+const TodoItem = ({ todo, delFunc }) => {
+
+
+    const { index, item } = todo;
 
     const [done, setDone] = useState(false);
 
@@ -9,10 +12,17 @@ const TodoItem = (props) => {
         done ? setDone(false) : setDone(true);
     }
 
+    const delItem = () => {
+        delFunc(index);
+    }
+
     return (
         <View style={styles.container}>
-            <Text style={[styles.text, done ? styles.textDone : null]}>{props.text}</Text>
-            <Button title={done ? "✔": '___'} onPress={checkIt} />
+            <Text style={[styles.text, done ? styles.textDone : null]}>{item}</Text>
+            <View style={styles.buttonContainer}>
+                <Button color="white" title={done ? "✔" : '___'} onPress={checkIt} />
+                <Button color="white" title={'🗑'} onPress={delItem} />
+            </View>
         </View>
     )
 };
@@ -29,12 +39,19 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     text: {
-        flex: 10,
+        flex: 7,
         color: "white",
         fontSize: 20,
     },
-    textDone:{
+    textDone: {
         textDecorationLine: "line-through",
         color: "#aaa"
+    },
+    buttonContainer:{
+        flex: 2,
+        marginLeft: 5,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems:"center"
     }
 })

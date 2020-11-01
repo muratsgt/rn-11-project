@@ -1,26 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { InputBox, TodoItem } from './components';
 
 const App = () => {
 
     const [todos, setTodos] = useState([]);
+    const [counter, setCounter] = useState(0);
 
-    let counter = todos.length;
-
-    const renderItem = ({item}) => {
+    const renderItem = (data) => {
         return (
-            <TodoItem delFunc={delValue} text={item} />
+            <TodoItem delFunc={delValue} todo={data} />
         )
     };
 
+    useEffect(()=>{
+        setCounter( todos.length );
+    },[todos])
 
-    const delValue = (value) =>{
-
+    const delValue = (todoIndex) =>{
+        setTodos( todos.slice(0,todoIndex).concat(todos.slice(todoIndex+1,)) );
     };
 
     const addValue = (value)=>{
-        setTodos(todos.concat(value));
+        setTodos( todos.concat(value) );
     };
 
     return (
